@@ -30,15 +30,16 @@ public class Staff {
     @Column(name = "phone_number", nullable = false, length = 11)
     private String phoneNumber;
 
-    @Column(name = "role", nullable = false, length = 20)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private StaffRole role;
 
     @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApplicationLike> likesByStaff = new ArrayList<>();
 
 
     @Builder
-    public Staff(String name, Integer age, String phoneNumber, String role) {
+    public Staff(String name, Integer age, String phoneNumber, StaffRole role) {
         this.name = name;
         this.age = age;
         this.phoneNumber = phoneNumber;
@@ -46,7 +47,7 @@ public class Staff {
     }
 
     // 정보 수정 메서드
-    public void updateInfo(String name, Integer age, String phoneNumber, String role) {
+    public void updateInfo(String name, Integer age, String phoneNumber, StaffRole role) {
         this.name = name;
         this.age = age;
         this.phoneNumber = phoneNumber;

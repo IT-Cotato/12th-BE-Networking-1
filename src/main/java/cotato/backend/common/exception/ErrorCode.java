@@ -20,6 +20,13 @@ public enum ErrorCode {
 	// 지원 서류 관련 에러
 	APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "지원 서류를 찾을 수 없습니다.", "APPLICATION-001"),
 
+	// 운영진 관련 에러
+	STAFF_NOT_FOUND(HttpStatus.NOT_FOUND, "운영진을 찾을 수 없습니다.", "STAFF-001"),
+
+	// 좋아요 관련 에러
+	DUPLICATE_LIKE(HttpStatus.CONFLICT, "이미 좋아요를 누른 서류입니다.", "LIKE-001"),
+	LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "좋아요를 찾을 수 없습니다.", "LIKE-002"),
+
 	// Validation 에러
 	INVALID_NAME_LENGTH(HttpStatus.BAD_REQUEST, "이름은 2~10글자여야 합니다.", "VALIDATION-001"),
 	INVALID_AGE_RANGE(HttpStatus.BAD_REQUEST, "나이는 22~30살이어야 합니다.", "VALIDATION-002"),
