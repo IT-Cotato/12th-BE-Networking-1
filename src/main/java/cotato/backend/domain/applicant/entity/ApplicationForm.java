@@ -47,4 +47,8 @@ public class ApplicationForm {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "applicant_id")
     private Applicant applicant;
+
+    public void updateStatus(Status status) {
+        this.status = status;
+    }
 }

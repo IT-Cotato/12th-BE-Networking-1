@@ -4,6 +4,7 @@ import cotato.backend.api.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.applicant.application.ApplicationFormService;
 import cotato.backend.domain.applicant.dto.request.ApplicationFormRequest;
+import cotato.backend.domain.applicant.dto.request.ApplicationFormStatusUpdateRequest;
 import cotato.backend.domain.applicant.dto.response.ApplicationFormResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -26,5 +27,11 @@ public class ApplicationFormController {
     @GetMapping("/{id}")
     public DataResponse<ApplicationFormResponse> findById(@PathVariable Long id) {
         return DataResponse.from(applicationFormService.findById(id));
+    }
+
+    @PatchMapping("/{id}/status")
+    public DataResponse<Void> updateStatus(@PathVariable Long id, @Valid @RequestBody ApplicationFormStatusUpdateRequest request) {
+        applicationFormService.updateStatus(id, request.status());
+        return DataResponse.ok();
     }
 }

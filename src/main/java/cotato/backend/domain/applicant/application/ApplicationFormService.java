@@ -7,6 +7,7 @@ import cotato.backend.domain.applicant.dto.request.ApplicationFormRequest;
 import cotato.backend.domain.applicant.dto.response.ApplicationFormResponse;
 import cotato.backend.domain.applicant.entity.Applicant;
 import cotato.backend.domain.applicant.entity.ApplicationForm;
+import cotato.backend.domain.applicant.enums.Status;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,13 @@ public class ApplicationFormService {
                 applicationFormRepository.findById(id)
                         .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND))
         );
+    }
+
+    @Transactional
+    public void updateStatus(Long id, Status status) {
+        ApplicationForm applicationForm = applicationFormRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND));
+
+        applicationForm.updateStatus(status);
     }
 }
