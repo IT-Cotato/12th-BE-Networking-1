@@ -2,6 +2,7 @@ package cotato.backend.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,12 +20,12 @@ public class GlobalExceptionHandler {
 		log.error("처리되지 않은 예외 발생: ", e);
 		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
 		ErrorResponse errorResponse = ErrorResponse.of(
-			ErrorCode.INTERNAL_SERVER_ERROR,
-			request
+				ErrorCode.INTERNAL_SERVER_ERROR,
+				request
 		);
 		return ResponseEntity
-			.status(HttpStatus.INTERNAL_SERVER_ERROR)
-			.body(errorResponse);
+				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body(errorResponse);
 	}
 
 	@ExceptionHandler(AppException.class)
@@ -33,7 +34,21 @@ public class GlobalExceptionHandler {
 		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
 		ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode(), request);
 		return ResponseEntity
-			.status(e.getErrorCode().getHttpStatus())
-			.body(errorResponse);
+				.status(e.getErrorCode().getHttpStatus())
+				.body(errorResponse);
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e, HttpServletRequest request) {
+		log.error("Validation 에러 발생 : {}", e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
+
+		ErrorResponse errorResponse = ErrorResponse.of(
+				ErrorCode.INVALID_PARAMETER,
+				request
+		);
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(errorResponse);
 	}
 }

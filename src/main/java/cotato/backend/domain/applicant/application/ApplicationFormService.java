@@ -1,5 +1,7 @@
 package cotato.backend.domain.applicant.application;
 
+import cotato.backend.common.exception.AppException;
+import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.applicant.dao.ApplicationFormRepository;
 import cotato.backend.domain.applicant.dto.request.ApplicationFormRequest;
 import cotato.backend.domain.applicant.entity.Applicant;

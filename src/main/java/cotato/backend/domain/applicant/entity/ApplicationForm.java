@@ -30,12 +30,10 @@ public class ApplicationForm {
     private Part part;
 
     @Column(name = "skill_level", nullable = false)
-    @Builder.Default
-    private Integer skillLevel = 5;
+    private Integer skillLevel;
 
     @Column(name = "passion", nullable = false)
-    @Builder.Default
-    private Integer passion = 5;
+    private Integer passion;
 
     @CreatedDate
     @Column(name = "submitted_at", nullable = false)

@@ -4,6 +4,7 @@ import cotato.backend.api.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.applicant.application.ApplicationFormService;
 import cotato.backend.domain.applicant.dto.request.ApplicationFormRequest;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class ApplicationFormController {
     private final ApplicationFormService applicationFormService;
 
     @PostMapping
-    public DataResponse<DefaultIdResponse> submit(@RequestBody ApplicationFormRequest request) {
+    public DataResponse<DefaultIdResponse> submit(@Valid @RequestBody ApplicationFormRequest request) {
         Long id = applicationFormService.submit(request);
         return DataResponse.created(DefaultIdResponse.of(id));
     }
