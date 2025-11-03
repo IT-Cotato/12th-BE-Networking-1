@@ -4,12 +4,10 @@ import cotato.backend.api.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.applicant.application.ApplicantService;
 import cotato.backend.domain.applicant.dto.request.ApplicantRequest;
+import cotato.backend.domain.applicant.dto.response.ApplicantResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/applicants")
@@ -22,5 +20,10 @@ public class ApplicantController {
     public DataResponse<DefaultIdResponse> save(@RequestBody ApplicantRequest request) {
         Long id = applicantService.save(request);
         return DataResponse.created(DefaultIdResponse.of(id));
+    }
+
+    @GetMapping("/{id}")
+    public DataResponse<ApplicantResponse> findById(@PathVariable Long id) {
+        return DataResponse.from(applicantService.findById(id));
     }
 }

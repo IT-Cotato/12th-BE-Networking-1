@@ -1,9 +1,11 @@
 package cotato.backend.domain.applicant.application;
 
 import cotato.backend.common.exception.AppException;
+import cotato.backend.common.exception.EntityNotFoundException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.applicant.dao.ApplicantRepository;
 import cotato.backend.domain.applicant.dto.request.ApplicantRequest;
+import cotato.backend.domain.applicant.dto.response.ApplicantResponse;
 import cotato.backend.domain.applicant.entity.Applicant;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +49,11 @@ public class ApplicantService {
         if (age < 22 || age > 30) {
             throw new AppException(ErrorCode.INVALID_AGE_RANGE);
         }
+    }
+
+    public ApplicantResponse findById(Long id) {
+        return ApplicantResponse.from(
+                applicantRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND)));
     }
 }
