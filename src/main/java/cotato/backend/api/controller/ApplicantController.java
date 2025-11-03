@@ -4,6 +4,7 @@ import cotato.backend.api.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.applicant.application.ApplicantService;
 import cotato.backend.domain.applicant.dto.request.ApplicantRequest;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/applicants")
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplicantController {
 
     private final ApplicantService applicantService;

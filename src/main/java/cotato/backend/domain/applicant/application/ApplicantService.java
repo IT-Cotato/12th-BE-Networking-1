@@ -5,17 +5,19 @@ import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.applicant.dao.ApplicantRepository;
 import cotato.backend.domain.applicant.dto.request.ApplicantRequest;
 import cotato.backend.domain.applicant.entity.Applicant;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
+@Transactional(readOnly = true)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplicantService {
 
     private final ApplicantRepository applicantRepository;
 
+    @Transactional
     public Long save(ApplicantRequest request) {
 
         validateApplicant(request);
