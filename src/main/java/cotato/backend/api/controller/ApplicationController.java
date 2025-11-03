@@ -4,9 +4,12 @@ import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.application.application.ApplicationService;
 import cotato.backend.domain.application.dto.request.ApplicationRequest;
 import cotato.backend.domain.application.dto.response.ApplicationDetailResponse;
+import cotato.backend.domain.application.dto.response.ApplicationListResponse;
+import cotato.backend.domain.like.dto.request.LikeRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,27 @@ public class ApplicationController {
     public ResponseEntity<DataResponse<ApplicationDetailResponse>> getApplicationDetail(@PathVariable("id") Long id) {
         ApplicationDetailResponse response = applicationService.getApplicationDetail(id);
         return ResponseEntity.ok(DataResponse.from(response));
+    }
+
+    // 지원서 리스트 조회
+    @GetMapping("/list")
+    public ResponseEntity<DataResponse<Page<ApplicationListResponse>>> getApplicationList(
+            @RequestParam(required = false) String filterBy,
+            @RequestParam(required = false) Integer period,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        Page<ApplicationListResponse> listPage = applicationService.getApplicationList(filterBy, period, page, pageSize);
+
+        return ResponseEntity.ok(DataResponse.from(listPage));
+    }
+
+    // 지원서 좋아요
+    @PostMapping("/{id}/like")
+    public ResponseEntity<DataResponse<Void>> likeApplication(@PathVariable("id") Long applicationId, @Valid @RequestBody LikeRequest request) {
+
+        applicationService.likeApplication(applicationId, request.staffId());
+        return ResponseEntity.ok(DataResponse.ok());
     }
 
 }

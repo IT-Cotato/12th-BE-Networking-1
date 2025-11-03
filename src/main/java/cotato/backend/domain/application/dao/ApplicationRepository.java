@@ -20,4 +20,16 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
     @Query("SELECT a FROM ApplicationEntity a JOIN FETCH a.applicant app WHERE a.id = :id")
     Optional<ApplicationEntity> findByIdWithApplicant(@Param("id") Long id);
 
+    // 지원기수별 조회
+    @Query("SELECT a FROM ApplicationEntity a JOIN FETCH a.applicant WHERE a.period = :period")
+    Page<ApplicationEntity> findByPeriod(Integer period, Pageable pageable);
+
+    // 좋아요순 조회
+    @Query("SELECT a FROM ApplicationEntity a JOIN FETCH a.applicant ORDER BY a.likeCount DESC")
+    Page<ApplicationEntity> findAllOrderByLikeCountDesc(Pageable pageable);
+
+    // 지원기수+좋아요순 조회
+    @Query("SELECT a FROM ApplicationEntity a JOIN FETCH a.applicant WHERE a.period = :period ORDER BY a.likeCount DESC")
+    Page<ApplicationEntity> findByPeriodOrderByLikeCountDesc(@Param("period") Integer period, Pageable pageable);
+
 }
