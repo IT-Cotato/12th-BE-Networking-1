@@ -61,4 +61,16 @@ public class ApplicantService {
                 applicantRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND)));
     }
+
+    @Transactional
+    public ApplicantResponse update(Long id, ApplicantRequest request) {
+        Applicant applicant = applicantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND));
+
+        validateApplicant(request);
+
+        applicant.update(request.getName(), request.getAge(), request.getPhoneNum());
+
+        return ApplicantResponse.from(applicant);
+    }
 }

@@ -2,6 +2,7 @@ package cotato.backend.domain.applicant.entity;
 
 
 import cotato.backend.common.entity.BaseEntity;
+import cotato.backend.domain.applicant.dto.response.ApplicantResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,4 +35,10 @@ public class Applicant extends BaseEntity {
 
     @Column(name = "inactive_at")
     private LocalDateTime inactiveAt;
+
+    public void update(String name, Integer age, String phoneNum) {
+        this.name = name;
+        this.age = age;
+        this.phoneNum = phoneNum;
+    }
 }

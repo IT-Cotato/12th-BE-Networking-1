@@ -26,4 +26,9 @@ public class ApplicantController {
     public DataResponse<ApplicantResponse> findById(@PathVariable Long id) {
         return DataResponse.from(applicantService.findById(id));
     }
+
+    @PutMapping("/{id}")
+    public DataResponse<ApplicantResponse> update(@PathVariable Long id, @RequestBody ApplicantRequest request) {
+        return DataResponse.from(applicantService.update(id, request));
+    }
 }
