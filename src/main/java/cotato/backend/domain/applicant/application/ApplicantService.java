@@ -40,6 +40,11 @@ public class ApplicantService {
         String name = request.getName();
         Integer age = request.getAge();
 
+        // null 체크
+        if (name == null || age == null) {
+            throw new AppException(ErrorCode.INVALID_PARAMETER);
+        }
+
         // 이름 길이 검증
         if (name.length() <2 || name.length() > 10) {
             throw new AppException(ErrorCode.INVALID_NAME_LENGTH);
