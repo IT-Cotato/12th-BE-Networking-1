@@ -1,5 +1,6 @@
 package cotato.backend.application.dto;
 
+import cotato.backend.domain.application.entity.Part;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ public class ApplicationCreateRequest {
     private String name;
     private Integer period;
     private Integer age;
-    private String part;
+    private Part part;
     private Integer ability;
     private Integer passion;
     private String phoneNumber;

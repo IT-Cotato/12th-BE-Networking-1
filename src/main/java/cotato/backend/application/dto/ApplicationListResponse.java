@@ -1,6 +1,7 @@
 package cotato.backend.application.dto;
 
 import cotato.backend.domain.application.entity.Application;
+import cotato.backend.domain.application.entity.Part;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ public class ApplicationListResponse {
     private Long id;
     private String name;
     private Integer period;
-    private String part;
+    private Part part;
     private Integer likeCount;
 
     public static ApplicationListResponse from(Application application) {

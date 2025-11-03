@@ -30,8 +30,9 @@ public class Application {
     @Column(name ="period", nullable = false)
     private Integer period;
 
-    @Column(name = "part", nullable = false)
-    private String part;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "part", nullable = false, length = 20)
+    private Part part;
 
     @Column(name = "ability", nullable = false)
     private Integer ability;
@@ -49,7 +50,7 @@ public class Application {
     private List<ApplicationLike> likesByApplication = new ArrayList<>();
 
     @Builder
-    public Application(Applicant applicant, Integer period, String part, Integer ability, Integer passion, LocalDateTime applicationTime) {
+    public Application(Applicant applicant, Integer period, Part part, Integer ability, Integer passion, LocalDateTime applicationTime) {
         this.applicant = applicant;
         this.period = period;
         this.part = part;

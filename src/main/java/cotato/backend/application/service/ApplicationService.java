@@ -91,7 +91,7 @@ public class ApplicationService {
             throw new ValidationException(ErrorCode.INVALID_PHONE_NUMBER);
         }
 
-        if (!isValidPart(request.getPart())) {
+        if (request.getPart() == null) {
             throw new ValidationException(ErrorCode.INVALID_PART);
         }
 
@@ -107,13 +107,6 @@ public class ApplicationService {
             throw new ValidationException(ErrorCode.INVALID_SCORE_RANGE);
         }
     }
-
-    private boolean isValidPart(String part) {
-        return part != null &&
-                (part.equals("기획") || part.equals("디자이너") ||
-                        part.equals("프론트엔드") || part.equals("백엔드"));
-    }
-
 
     private Applicant createApplicant(ApplicationCreateRequest request) {
         Applicant applicant = Applicant.builder()
