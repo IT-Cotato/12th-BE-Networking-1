@@ -4,13 +4,11 @@ import cotato.backend.api.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.applicant.application.ApplicationFormService;
 import cotato.backend.domain.applicant.dto.request.ApplicationFormRequest;
+import cotato.backend.domain.applicant.dto.response.ApplicationFormResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/application-forms")
@@ -23,5 +21,10 @@ public class ApplicationFormController {
     public DataResponse<DefaultIdResponse> submit(@Valid @RequestBody ApplicationFormRequest request) {
         Long id = applicationFormService.submit(request);
         return DataResponse.created(DefaultIdResponse.of(id));
+    }
+
+    @GetMapping("/{id}")
+    public DataResponse<ApplicationFormResponse> findById(@PathVariable Long id) {
+        return DataResponse.from(applicationFormService.findById(id));
     }
 }

@@ -4,6 +4,7 @@ import cotato.backend.common.exception.AppException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.applicant.dao.ApplicationFormRepository;
 import cotato.backend.domain.applicant.dto.request.ApplicationFormRequest;
+import cotato.backend.domain.applicant.dto.response.ApplicationFormResponse;
 import cotato.backend.domain.applicant.entity.Applicant;
 import cotato.backend.domain.applicant.entity.ApplicationForm;
 import lombok.AccessLevel;
@@ -32,5 +33,12 @@ public class ApplicationFormService {
                 .passion(request.passion()).build();
 
         return applicationFormRepository.save(applicationForm).getId();
+    }
+
+    public ApplicationFormResponse findById(Long id) {
+        return ApplicationFormResponse.from(
+                applicationFormRepository.findById(id)
+                        .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND))
+        );
     }
 }

@@ -40,6 +40,7 @@ public class ApplicationForm {
     private LocalDateTime submittedAt;
 
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     @Builder.Default
     private Status status = Status.PENDING;
 
