@@ -20,19 +20,18 @@ public class ApplicantService {
     private final ApplicantRepository applicantRepository;
 
     @Transactional
-    public Long save(ApplicantRequest request) {
+    public Applicant save(ApplicantRequest request) {
 
         validateApplicant(request);
 
         return applicantRepository.findByPhoneNum(request.getPhoneNum())
-                .map(Applicant::getId)
                 .orElseGet(() -> {
                     Applicant applicant = Applicant.builder()
                             .name(request.getName())
                             .age(request.getAge())
                             .phoneNum(request.getPhoneNum())
                             .build();
-                    return applicantRepository.save(applicant).getId();
+                    return applicantRepository.save(applicant);
                 });
     }
 

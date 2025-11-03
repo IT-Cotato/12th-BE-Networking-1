@@ -16,9 +16,10 @@ public class ApplicantController {
 
     private final ApplicantService applicantService;
 
+    // 테스트용
     @PostMapping
     public DataResponse<DefaultIdResponse> save(@RequestBody ApplicantRequest request) {
-        Long id = applicantService.save(request);
+        Long id = applicantService.save(request).getId();
         return DataResponse.created(DefaultIdResponse.of(id));
     }
 
