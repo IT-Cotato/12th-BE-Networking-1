@@ -97,4 +97,11 @@ public class MemberService {
 
         return MemberResponse.from(member);
     }
+
+    public MemberResponse findById(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.MEMBER_NOT_FOUND));
+
+        return MemberResponse.from(member);
+    }
 }

@@ -32,4 +32,9 @@ public class MemberController {
     public DataResponse<MemberResponse> update(@PathVariable Long id, @RequestBody MemberRequest request) {
         return DataResponse.from(memberService.update(id, request));
     }
+
+    @GetMapping("/{id}")
+    public DataResponse<MemberResponse> findById(@PathVariable Long id) {
+        return DataResponse.from(memberService.findById(id));
+    }
 }
