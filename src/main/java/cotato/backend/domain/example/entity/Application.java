@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -32,4 +35,7 @@ public class Application {
     @ManyToOne
     @JoinColumn(name = "applicant_id")
     private Applicant applicant;
+
+    @OneToMany(mappedBy = "application")
+    private List<Like> likes = new ArrayList<>();
 }
