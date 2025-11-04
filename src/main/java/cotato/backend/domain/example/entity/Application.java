@@ -29,8 +29,11 @@ public class Application {
     private int ability;
     private int passion;
     private String phoneNumber;
+
     @CreatedDate
     private LocalDateTime applicationTime;
+
+    private int likeCount;
 
     @ManyToOne
     @JoinColumn(name = "applicant_id")
