@@ -33,6 +33,9 @@ public enum ErrorCode {
 
 	MEMBER_DUPLICATE_PHONE_NUM(HttpStatus.BAD_REQUEST, "이미 등록된 전화번호입니다.", "MEMBER-010"),
 
+	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다.", "MEMBER-011"),
+	MEMBER_ROLE_REQUIRED(HttpStatus.BAD_REQUEST, "역할은 필수입니다.", "MEMBER-012"),
+
 	//500
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에서 에러가 발생하였습니다.", "COMMON-004"),
 	;

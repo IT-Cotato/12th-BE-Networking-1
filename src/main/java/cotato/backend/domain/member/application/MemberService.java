@@ -4,6 +4,7 @@ import cotato.backend.common.exception.AppException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.member.dao.MemberRepository;
 import cotato.backend.domain.member.dto.MemberRequest;
+import cotato.backend.domain.member.dto.RoleChangeRequest;
 import cotato.backend.domain.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -65,5 +66,19 @@ public class MemberService {
         if (memberRepository.findByPhoneNum(request.phoneNum()).isPresent()) {
             throw new AppException(ErrorCode.MEMBER_DUPLICATE_PHONE_NUM);
         }
+    }
+
+    @Transactional
+    public void updateRole(Long id, RoleChangeRequest request) {
+
+        if (request.role() == null) {
+            throw new AppException(ErrorCode.MEMBER_ROLE_REQUIRED);
+        }
+
+
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.MEMBER_NOT_FOUND));
+
+        member.changeRole(request.role());
     }
 }

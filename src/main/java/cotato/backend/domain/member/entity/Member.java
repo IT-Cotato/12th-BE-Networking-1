@@ -38,4 +38,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Role role = Role.MEMBER;
+
+    public void changeRole(Role role) {
+        this.role = role;
+    }
 }
