@@ -4,10 +4,10 @@ import cotato.backend.applicant.entity.Applicant;
 import cotato.backend.applicant.repository.ApplicantRepository;
 import cotato.backend.appllication.dto.ApplicationDetailResponseDto;
 import cotato.backend.appllication.dto.ApplicationListResponseDto;
-import cotato.backend.appllication.dto.ApplicationRequestDto;
+import cotato.backend.appllication.dto.ApplicationCreateRequestDto;
 import cotato.backend.appllication.entity.Application;
 import cotato.backend.appllication.repository.ApplicationRepository;
-import cotato.backend.global.Part;
+import cotato.backend.appllication.enums.Part;
 import cotato.backend.likes.entity.Likes;
 import cotato.backend.likes.repository.LikesRepository;
 import cotato.backend.manager.entity.Manager;
@@ -32,7 +32,7 @@ public class ApplicationService {
     private final LikesRepository likesRepository;
 
     @Transactional
-    public void createApplication(ApplicationRequestDto request) {
+    public void createApplication(ApplicationCreateRequestDto request) {
         validateRequest(request);
 
         Applicant applicant = Applicant.builder()
@@ -109,48 +109,9 @@ public class ApplicationService {
     }
 
     /**
-     * 좋아요 누르기
-     */
-    @Transactional
-    public void likeApplication(Long applicationId, Long managerId) {
-        Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 지원서입니다."));
-        Manager manager = managerRepository.findById(managerId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 운영진입니다."));
-
-        if (likesRepository.existsByApplicationAndManager(application, manager)) {
-            throw new IllegalStateException("이미 좋아요를 누른 지원서입니다.");
-        }
-
-        Likes likes = Likes.builder()
-                .application(application)
-                .manager(manager)
-                .build();
-        likesRepository.save(likes);
-        application.increaseLikeCount();
-    }
-
-    /**
-     * 좋아요 취소
-     */
-    @Transactional
-    public void unlikeApplication(Long applicationId, Long managerId) {
-        Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 지원서입니다."));
-        Manager manager = managerRepository.findById(managerId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 운영진입니다."));
-
-        Likes likes = likesRepository.findByApplicationAndManager(application, manager)
-                .orElseThrow(() -> new IllegalStateException("좋아요를 누르지 않은 지원서입니다."));
-
-        likesRepository.delete(likes);
-        application.decreaseLikeCount();
-    }
-
-    /**
      * 유효성 검증
      */
-    private void validateRequest(ApplicationRequestDto req) {
+    private void validateRequest(ApplicationCreateRequestDto req) {
         if (req.getName().length() < 2 || req.getName().length() > 10)
             throw new IllegalArgumentException("이름은 2~10자여야 합니다.");
         if (req.getGeneration() < 1)

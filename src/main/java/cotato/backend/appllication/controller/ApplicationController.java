@@ -2,7 +2,7 @@ package cotato.backend.appllication.controller;
 
 import cotato.backend.appllication.dto.ApplicationDetailResponseDto;
 import cotato.backend.appllication.dto.ApplicationListResponseDto;
-import cotato.backend.appllication.dto.ApplicationRequestDto;
+import cotato.backend.appllication.dto.ApplicationCreateRequestDto;
 import cotato.backend.appllication.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class ApplicationController {
      * (수정 및 삭제 불가)
      */
     @PostMapping
-    public ResponseEntity<String> createApplication(@RequestBody ApplicationRequestDto request) {
+    public ResponseEntity<String> createApplication(@RequestBody ApplicationCreateRequestDto request) {
         applicationService.createApplication(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("지원서가 성공적으로 등록되었습니다.");
@@ -51,25 +51,4 @@ public class ApplicationController {
         return ResponseEntity.ok(list);
     }
 
-    /**
-     * 좋아요 추가
-     */
-    @PostMapping("/{id}/like")
-    public ResponseEntity<String> likeApplication(
-            @PathVariable("id") Long applicationId,
-            @RequestParam("managerId") Long managerId) {
-        applicationService.likeApplication(applicationId, managerId);
-        return ResponseEntity.ok("좋아요가 추가되었습니다.");
-    }
-
-    /**
-     * 좋아요 취소
-     */
-    @DeleteMapping("/{id}/like")
-    public ResponseEntity<String> unlikeApplication(
-            @PathVariable("id") Long applicationId,
-            @RequestParam("managerId") Long managerId) {
-        applicationService.unlikeApplication(applicationId, managerId);
-        return ResponseEntity.ok("좋아요가 취소되었습니다.");
-    }
 }

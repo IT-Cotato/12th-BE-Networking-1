@@ -1,6 +1,7 @@
 package cotato.backend.manager.entity;
 
 import cotato.backend.likes.entity.Likes;
+import cotato.backend.manager.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,10 +36,6 @@ public class Manager {
 
     @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likesList = new ArrayList<>();
-
-    public enum Role {
-        PARTJANG, GIHOEGTEAMJANG, HONGBOTEAMJANG, HOEJANG, BUHOEJANG, GYOYUGTEAMJANG
-    }
 
     public void updateManager(String name, String phoneNumber, Integer birthYear, Role role) {
         this.name = name;

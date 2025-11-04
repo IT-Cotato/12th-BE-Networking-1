@@ -1,7 +1,7 @@
 package cotato.backend.appllication.entity;
 
 import cotato.backend.applicant.entity.Applicant;
-import cotato.backend.global.Part;
+import cotato.backend.appllication.enums.Part;
 import jakarta.persistence.*;
 import lombok.*;
 

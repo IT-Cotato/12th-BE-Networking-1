@@ -1,4 +1,4 @@
-package cotato.backend.global;
+package cotato.backend.appllication.enums;
 
 import java.util.Arrays;
 

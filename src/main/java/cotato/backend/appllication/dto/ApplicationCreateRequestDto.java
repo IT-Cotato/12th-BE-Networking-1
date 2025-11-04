@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class ApplicationRequestDto {
+public class ApplicationCreateRequestDto {
 
     private String name;
     private int generation;
