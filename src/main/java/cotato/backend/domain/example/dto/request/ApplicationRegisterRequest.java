@@ -3,7 +3,7 @@ package cotato.backend.domain.example.dto.request;
 //import jakarta.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull; // <- 명시적으로 지정
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
