@@ -1,9 +1,7 @@
-package cotato.backend.domain.member.dto;
+package cotato.backend.domain.member.dto.request;
 
 import cotato.backend.common.enums.Part;
 import cotato.backend.domain.member.enums.Role;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 public record MemberRequest(
         String name,

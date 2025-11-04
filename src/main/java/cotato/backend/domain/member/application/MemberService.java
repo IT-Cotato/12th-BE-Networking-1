@@ -3,8 +3,9 @@ package cotato.backend.domain.member.application;
 import cotato.backend.common.exception.AppException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.member.dao.MemberRepository;
-import cotato.backend.domain.member.dto.MemberRequest;
-import cotato.backend.domain.member.dto.RoleChangeRequest;
+import cotato.backend.domain.member.dto.request.MemberRequest;
+import cotato.backend.domain.member.dto.request.RoleChangeRequest;
+import cotato.backend.domain.member.dto.response.MemberResponse;
 import cotato.backend.domain.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class MemberService {
     @Transactional
     public Long save(MemberRequest request) {
 
-        validateMember(request);
+        validateMember(request, null);
 
         Member member = Member.builder()
                 .name(request.name())
@@ -33,7 +34,7 @@ public class MemberService {
         return memberRepository.save(member).getId();
     }
 
-    private void validateMember(MemberRequest request) {
+    private void validateMember(MemberRequest request, String currentPhoneNum) {
         if (request.name() == null) {
             throw new AppException(ErrorCode.MEMBER_NAME_REQUIRED);
         }
@@ -63,8 +64,10 @@ public class MemberService {
             throw new AppException(ErrorCode.MEMBER_INVALID_PHONE_NUM);
         }
 
-        if (memberRepository.findByPhoneNum(request.phoneNum()).isPresent()) {
-            throw new AppException(ErrorCode.MEMBER_DUPLICATE_PHONE_NUM);
+        if (!request.phoneNum().equals(currentPhoneNum)) {
+            if (memberRepository.findByPhoneNum(request.phoneNum()).isPresent()) {
+                throw new AppException(ErrorCode.MEMBER_DUPLICATE_PHONE_NUM);
+            }
         }
     }
 
@@ -80,5 +83,18 @@ public class MemberService {
                 .orElseThrow(() -> new AppException(ErrorCode.MEMBER_NOT_FOUND));
 
         member.changeRole(request.role());
+    }
+
+    @Transactional
+    public MemberResponse update(Long id, MemberRequest request) {
+
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.MEMBER_NOT_FOUND));
+
+        validateMember(request, member.getPhoneNum());
+
+        member.update(request.name(), request.generation(), request.age(), request.part(), request.phoneNum());
+
+        return MemberResponse.from(member);
     }
 }

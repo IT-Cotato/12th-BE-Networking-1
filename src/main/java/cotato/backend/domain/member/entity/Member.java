@@ -42,4 +42,12 @@ public class Member extends BaseEntity {
     public void changeRole(Role role) {
         this.role = role;
     }
+
+    public void update(String name, Integer generation, Integer age, Part part, String phoneNum) {
+        this.name = name;
+        this.generation = generation;
+        this.age = age;
+        this.part = part;
+        this.phoneNum = phoneNum;
+    }
 }
