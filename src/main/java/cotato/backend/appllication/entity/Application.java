@@ -1,16 +1,17 @@
 package cotato.backend.appllication.entity;
 
 import cotato.backend.applicant.entity.Applicant;
-import cotato.backend.global.enums.Part;
+import cotato.backend.global.Part;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@Builder
 @Table(name = "application")
 public class Application {
 
@@ -20,8 +21,17 @@ public class Application {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "phone_number", nullable = false)
+    @JoinColumn(name = "applicant_id", nullable = false)
     private Applicant applicant;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private int birthYear;
+
+    @Column(nullable = false)
+    private String phoneNumber;
 
     @Column(name = "generation", nullable = false)
     private Integer generation;
@@ -30,12 +40,23 @@ public class Application {
     @Column(name = "part", nullable = false)
     private Part part;
 
-    @Column(name = "skill", nullable = false)
-    private Integer skill;
+    @Column(name = "ability", nullable = false)
+    private Integer ability;
 
     @Column(name = "passion", nullable = false)
     private Integer passion;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "application_time", nullable = false)
+    private LocalDateTime applicationTime;
+
+    @Column(nullable = false)
+    private long likeCount;
+
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        if (this.likeCount > 0) this.likeCount--;
+    }
 }

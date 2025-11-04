@@ -1,13 +1,17 @@
 package cotato.backend.manager.entity;
 
-import cotato.backend.global.enums.Part;
+import cotato.backend.likes.entity.Likes;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@NoArgsConstructor
+@Builder
 @Table(name = "manager")
 public class Manager {
 
@@ -23,10 +27,23 @@ public class Manager {
     private Integer birthYear;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "part", nullable = false)
-    private Part part;
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Likes> likesList = new ArrayList<>();
+
+    public enum Role {
+        PARTJANG, GIHOEGTEAMJANG, HONGBOTEAMJANG, HOEJANG, BUHOEJANG, GYOYUGTEAMJANG
+    }
+
+    public void updateManager(String name, String phoneNumber, Integer birthYear, Role role) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.birthYear = birthYear;
+        this.role = role;
+    }
 }

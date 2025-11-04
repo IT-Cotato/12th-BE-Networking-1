@@ -3,12 +3,13 @@ package cotato.backend.likes.entity;
 import cotato.backend.appllication.entity.Application;
 import cotato.backend.manager.entity.Manager;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@NoArgsConstructor
+@Builder
 @Table(name = "likes")
 public class Likes {
 
