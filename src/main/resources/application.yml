@@ -1,3 +1,39 @@
+server:
+  port: 8080
+  shutdown: graceful
+
 spring:
   application:
-    name: networking2
+    name: cotato-applicant-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/cotato2?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: root
+    password: "whgudwns100!"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000        # 5분
+      connection-timeout: 30000   # 30초
+      pool-name: cotato-hikari
+
+  jpa:
+    hibernate:
+      ddl-auto: update       # 개발 초기에만 사용 권장 (운영은 validate/none)
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        jdbc:
+          time_zone: Asia/Seoul
+        dialect: org.hibernate.dialect.MySQLDialect
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace   # 시끄러우면 info로 낮추기
