@@ -1,6 +1,6 @@
 package cotato.backend.domain.staff.dto.response;
 
-import cotato.backend.domain.staff.entity.Role;
+import cotato.backend.domain.staff.entity.StaffRole;
 import cotato.backend.domain.staff.entity.StaffEntity;
 
 public record StaffResponse(
@@ -8,7 +8,7 @@ public record StaffResponse(
 	String name,
     int age,
     String phoneNumber,
-    Role role
+    StaffRole role
 ) {
 	public static StaffResponse from(StaffEntity staff) {
 		return new StaffResponse(

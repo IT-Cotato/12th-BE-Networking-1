@@ -2,7 +2,7 @@ package cotato.backend.domain.application.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import cotato.backend.domain.application.entity.ApplicationEntity;
-import cotato.backend.domain.application.entity.Part;
+import cotato.backend.domain.application.entity.ApplicationPart;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ public record ApplicationDetailResponse(
         String name,
         int period,
         int age,
-        Part part,
+        ApplicationPart part,
         int ability,
         int passion,
         String phoneNumber,

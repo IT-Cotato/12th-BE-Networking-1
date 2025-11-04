@@ -3,7 +3,7 @@ package cotato.backend.domain.application.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import cotato.backend.domain.applicant.entity.ApplicantEntity;
 import cotato.backend.domain.application.entity.ApplicationEntity;
-import cotato.backend.domain.application.entity.Part;
+import cotato.backend.domain.application.entity.ApplicationPart;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -23,7 +23,7 @@ public record ApplicationRequest(
         int age,
 
         int grade,
-        Part part,
+        ApplicationPart part,
 
         @Min(value = 0, message = "실력은 0 이상이어야 합니다")
         @Max(value = 10, message = "실력은 10 이하여야 합니다")

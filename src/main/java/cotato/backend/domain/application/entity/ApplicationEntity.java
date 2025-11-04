@@ -1,5 +1,6 @@
 package cotato.backend.domain.application.entity;
 
+import cotato.backend.common.converter.ApplicationPartConverter;
 import cotato.backend.domain.applicant.entity.ApplicantEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -26,9 +27,9 @@ public class ApplicationEntity {
     @Column(nullable = false)
     private int grade;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ApplicationPartConverter.class)
     @Column(nullable = false)
-    private Part part;
+    private ApplicationPart part;
 
     @Column(nullable = false)
     private int ability;
@@ -49,8 +50,8 @@ public class ApplicationEntity {
 
     @Builder
     public ApplicationEntity(ApplicantEntity applicant, int period, int grade,
-                              Part part, int ability, int passion,
-                              LocalDateTime applicationTime, int likeCount) {
+                             ApplicationPart part, int ability, int passion,
+                             LocalDateTime applicationTime, int likeCount) {
         this.applicant = applicant;
         this.period = period;
         this.grade = grade;

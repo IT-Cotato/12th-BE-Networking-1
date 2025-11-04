@@ -1,12 +1,12 @@
 package cotato.backend.domain.application.dto.response;
 
 import cotato.backend.domain.application.entity.ApplicationEntity;
-import cotato.backend.domain.application.entity.Part;
+import cotato.backend.domain.application.entity.ApplicationPart;
 
 public record ApplicationListResponse(
         String name,
         int period,
-        Part part,
+        ApplicationPart part,
         int likeCount // int -> Long
 ) {
     public static ApplicationListResponse from(ApplicationEntity application) {

@@ -26,17 +26,17 @@ public class StaffEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private StaffRole role;
 
 	@Builder
-	public StaffEntity(String name, int age, String phoneNumber, Role role) {
+	public StaffEntity(String name, int age, String phoneNumber, StaffRole role) {
 		this.name = name;
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.role = role;
 	}
 
-    public void update(String name, int age, String phoneNumber, Role role) {
+    public void update(String name, int age, String phoneNumber, StaffRole role) {
         this.name = name;
         this.age = age;
         this.phoneNumber = phoneNumber;
