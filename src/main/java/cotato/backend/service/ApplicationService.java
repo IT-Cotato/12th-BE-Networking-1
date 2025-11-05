@@ -1,5 +1,7 @@
 package cotato.backend.service;
 
+import cotato.backend.common.exception.AppException;
+import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.Applicant;
 import cotato.backend.domain.Application;
 import cotato.backend.dto.request.ApplicationRequest;
@@ -37,44 +39,41 @@ public class ApplicationService {
     // 상세조회
     public ApplicationResponse getApplication(Long id) {
         Application application = applicationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("지원서 없음."));
+                .orElseThrow(() -> new AppException(ErrorCode.APPLICATION_NOT_FOUND));
         return new ApplicationResponse(application);
     }
 
+    // 목록 조회
     public ApplicationListResponse getApplications(String filterBy, int page, int pageSize) {
         if (page < 1) {
-            throw new IllegalArgumentException("페이지 번호는 1 이상이어야 합니다.");
+            throw new AppException(ErrorCode.INVALID_PAGE);
         }
 
         Pageable pageable;
         Page<Application> result;
 
         switch (filterBy.toLowerCase()) {
-            // 1. 좋아요 내림차순
             case "likes" -> {
                 pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "likesNum"));
                 result = applicationRepository.findAll(pageable);
             }
             case "periodlikes" -> {
-                // 2. 기수+좋아요 내림차순
                 pageable = PageRequest.of(page - 1, pageSize,
                         Sort.by(Sort.Direction.DESC, "period")
                                 .and(Sort.by(Sort.Direction.DESC, "likesNum")));
                 result = applicationRepository.findAll(pageable);
             }
             case "period" -> {
-                // 3. 디폴트 기수 내림차순
                 pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "period"));
                 result = applicationRepository.findAll(pageable);
             }
-            default -> throw new IllegalArgumentException("filterBy 파라미터 오류: likes, period, period+likes 중 하나여야 합니다.");
+            default -> throw new AppException(ErrorCode.INVALID_FILTER);
         }
 
         if (result.isEmpty()) {
-            throw new IllegalStateException("검색 결과가 없습니다.");
+            throw new AppException(ErrorCode.APPLICATION_LIST_EMPTY);
         }
 
         return new ApplicationListResponse(page, pageSize, filterBy, result);
     }
-
 }
