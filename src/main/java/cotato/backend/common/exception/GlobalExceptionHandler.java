@@ -1,13 +1,13 @@
 package cotato.backend.common.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import cotato.backend.common.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
@@ -26,6 +26,27 @@ public class GlobalExceptionHandler {
 			.status(HttpStatus.INTERNAL_SERVER_ERROR)
 			.body(errorResponse);
 	}
+
+    // 유효성 검증
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException e, HttpServletRequest request
+    ) {
+        String errorMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+
+        log.warn("MethodArgumentNotValidException 발생: {}", errorMessage);
+        log.warn("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
+
+        ErrorResponse errorResponse = ErrorResponse.of(
+                ErrorCode.INVALID_PARAMETER,
+                request,
+                errorMessage
+        );
+
+        return ResponseEntity
+                .status(ErrorCode.INVALID_PARAMETER.getHttpStatus())
+                .body(errorResponse);
+    }
 
 	@ExceptionHandler(AppException.class)
 	public ResponseEntity<ErrorResponse> handleAppCustomException(AppException e, HttpServletRequest request) {
