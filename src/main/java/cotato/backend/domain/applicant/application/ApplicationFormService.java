@@ -1,17 +1,24 @@
 package cotato.backend.domain.applicant.application;
 
+import cotato.backend.common.enums.SortType;
 import cotato.backend.common.exception.AppException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.applicant.dao.ApplicationFormRepository;
 import cotato.backend.domain.applicant.dto.request.ApplicationFormRequest;
+import cotato.backend.domain.applicant.dto.response.ApplicationFormListResponse;
 import cotato.backend.domain.applicant.dto.response.ApplicationFormResponse;
 import cotato.backend.domain.applicant.entity.Applicant;
 import cotato.backend.domain.applicant.entity.ApplicationForm;
 import cotato.backend.domain.applicant.enums.Status;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -78,5 +85,31 @@ public class ApplicationFormService {
         if (request.passion() < 0 || request.passion() > 10) {
             throw new AppException(ErrorCode.APPLICATION_FORM_INVALID_PASSION);
         }
+    }
+
+    public Page<ApplicationFormListResponse> findByGeneration(Integer generation, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return applicationFormRepository.findByGenerationWithLikeCount(generation, pageable);
+    }
+
+    public Page<ApplicationFormListResponse> findBySort(SortType sortType, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return switch (sortType) {
+            case LIKES -> applicationFormRepository.findAllOrderByLikes(pageable);
+            case LATEST -> applicationFormRepository.findAllOrderBySubmittedAtDesc(pageable);
+            case OLDEST -> applicationFormRepository.findAllOrderBySubmittedAtAsc(pageable);
+        };
+    }
+
+    public Page<ApplicationFormListResponse> findByGenerationAndSort(
+            Integer generation, SortType sortType, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return switch (sortType) {
+            case LIKES -> applicationFormRepository.findByGenerationOrderByLikes(generation, pageable);
+            case LATEST -> applicationFormRepository.findByGenerationOrderBySubmittedAtDesc(generation, pageable);
+            case OLDEST -> applicationFormRepository.findByGenerationOrderBySubmittedAtAsc(generation, pageable);
+        };
     }
 }
