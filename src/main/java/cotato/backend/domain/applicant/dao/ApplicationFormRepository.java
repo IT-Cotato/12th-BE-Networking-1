@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ApplicationFormRepository extends JpaRepository<ApplicationForm, Long> {
 
@@ -83,5 +85,10 @@ public interface ApplicationFormRepository extends JpaRepository<ApplicationForm
             Pageable pageable
     );
 
-    ApplicationForm findByApplicantNameAndApplicantPhoneNumAndGeneration(String name, String phoneNum, Integer generation);
+    // 지원자 정보로 지원서 조회 (이름 + 전화번호 + 기수)
+    Optional<ApplicationForm> findByApplicantNameAndApplicantPhoneNumAndGeneration(
+            String name,
+            String phoneNum,
+            Integer generation
+    );
 }

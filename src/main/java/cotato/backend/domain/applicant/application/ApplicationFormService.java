@@ -114,12 +114,8 @@ public class ApplicationFormService {
     }
 
     public ApplicationFormResponse findByApplicantInfo(String name, String phoneNum, Integer generation) {
-        ApplicationForm applicationForm = applicationFormRepository.findByApplicantNameAndApplicantPhoneNumAndGeneration(name, phoneNum, generation);
-
-        if (applicationForm == null) {
-            throw new AppException(ErrorCode.APPLICATION_FORM_NOT_FOUND);
-        }
-
-        return ApplicationFormResponse.from(applicationForm);
+        return applicationFormRepository.findByApplicantNameAndApplicantPhoneNumAndGeneration(name, phoneNum, generation)
+                .map(ApplicationFormResponse::from)
+                .orElseThrow(() -> new AppException(ErrorCode.APPLICATION_FORM_NOT_FOUND));
     }
 }
