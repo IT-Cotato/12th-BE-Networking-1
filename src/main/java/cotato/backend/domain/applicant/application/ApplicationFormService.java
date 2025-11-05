@@ -112,4 +112,14 @@ public class ApplicationFormService {
             case OLDEST -> applicationFormRepository.findByGenerationOrderBySubmittedAtAsc(generation, pageable);
         };
     }
+
+    public ApplicationFormResponse findByApplicantInfo(String name, String phoneNum, Integer generation) {
+        ApplicationForm applicationForm = applicationFormRepository.findByApplicantNameAndApplicantPhoneNumAndGeneration(name, phoneNum, generation);
+
+        if (applicationForm == null) {
+            throw new AppException(ErrorCode.APPLICATION_FORM_NOT_FOUND);
+        }
+
+        return ApplicationFormResponse.from(applicationForm);
+    }
 }

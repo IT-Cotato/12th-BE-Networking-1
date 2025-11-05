@@ -82,4 +82,6 @@ public interface ApplicationFormRepository extends JpaRepository<ApplicationForm
             @Param("generation") Integer generation,
             Pageable pageable
     );
+
+    ApplicationForm findByApplicantNameAndApplicantPhoneNumAndGeneration(String name, String phoneNum, Integer generation);
 }

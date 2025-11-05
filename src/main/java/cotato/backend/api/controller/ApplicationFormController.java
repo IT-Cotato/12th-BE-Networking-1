@@ -68,4 +68,15 @@ public class ApplicationFormController {
         // 필터 없음 - 에러
         throw new AppException(ErrorCode.INVALID_PARAMETER);
     }
+
+    @GetMapping("/lookup")
+    public DataResponse<ApplicationFormResponse> lookupMyForm(
+            @RequestParam String name,
+            @RequestParam String phoneNum,
+            @RequestParam Integer generation
+    ) {
+        return DataResponse.from(
+                applicationFormService.findByApplicantInfo(name, phoneNum, generation)
+        );
+    }
 }
