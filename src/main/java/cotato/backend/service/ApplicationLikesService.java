@@ -1,6 +1,8 @@
 package cotato.backend.service;
 
 
+import cotato.backend.common.exception.AppException;
+import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.Admin;
 import cotato.backend.domain.Application;
 import cotato.backend.domain.ApplicationLikes;
@@ -23,18 +25,17 @@ public class ApplicationLikesService {
     private final ApplicationLikesRepository likesRepository;
     private final AdminRepository adminRepository;
 
-    // 좋아요 등록
+    // POST /api/applications/{applicationId}/likes
     @Transactional
     public void likeApplication(ApplicationLikesRequest request) {
         Application application = applicationRepository.findById(request.getApplicationId())
-                .orElseThrow(() -> new IllegalArgumentException("지원서를 찾을 수 없습니다."));
-        Admin admin = adminRepository.findById(request.getAdminId())
-                .orElseThrow(() -> new IllegalArgumentException("운영진을 찾을 수 없습니다."));
+                .orElseThrow(() -> new AppException(ErrorCode.APPLICATION_NOT_FOUND));
 
-        // 중복 좋아요 방지
-        boolean exists = likesRepository.existsByApplicationAndAdmin(application, admin);
-        if (exists) {
-            throw new IllegalStateException("이미 좋아요를 누른 지원서입니다.");
+        Admin admin = adminRepository.findById(request.getAdminId())
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND));
+
+        if (likesRepository.existsByApplicationAndAdmin(application, admin)) {
+            throw new AppException(ErrorCode.ALREADY_LIKED);
         }
 
         ApplicationLikes like = ApplicationLikes.builder()
@@ -43,15 +44,14 @@ public class ApplicationLikesService {
                 .build();
 
         likesRepository.save(like);
-
-        // 좋아요 수 업데이트
         application.increaseLikes();
     }
 
-    // 지원서별 좋아요 조회
+    // POST /api/applications/{applicationId}/likes
+    @Transactional
     public ApplicationLikesListResponse getLikes(Long applicationId) {
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new IllegalArgumentException("지원서를 찾을 수 없습니다."));
+                .orElseThrow(() -> new AppException(ErrorCode.APPLICATION_NOT_FOUND));
 
         List<ApplicationLikes> likes = likesRepository.findByApplication(application);
         return new ApplicationLikesListResponse(applicationId, likes);

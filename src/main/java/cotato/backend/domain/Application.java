@@ -56,10 +56,6 @@ public class Application {
         this.likesNum++;
     }
 
-    public void decreaseLikes() {
-        if (this.likesNum > 0) this.likesNum--;
-    }
-
     @PrePersist
     protected void onCreate() {
         this.applicationTime = LocalDateTime.now();

@@ -23,6 +23,7 @@ public enum ErrorCode {
 
     //409
     DUPLICATE_PHONE_NUMBER(HttpStatus.CONFLICT, "이미 등록된 전화번호입니다.", "COMMON-005"),
+    ALREADY_LIKED(HttpStatus.CONFLICT, "이미 좋아요를 누른 지원서입니다.", "LIKE-001"),
 
     //500
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에서 에러가 발생하였습니다.", "COMMON-004"),
