@@ -2,38 +2,29 @@ package cotato.backend.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
-import cotato.backend.common.dto.ErrorResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
 
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	// 처리되지 않은 모든 예외를 잡는 핸들러
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorResponse> handleAllException(Exception e, HttpServletRequest request) {
-		log.error("처리되지 않은 예외 발생: ", e);
-		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
-		ErrorResponse errorResponse = ErrorResponse.of(
-			ErrorCode.INTERNAL_SERVER_ERROR,
-			request
-		);
-		return ResponseEntity
-			.status(HttpStatus.INTERNAL_SERVER_ERROR)
-			.body(errorResponse);
-	}
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+    }
 
-	@ExceptionHandler(AppException.class)
-	public ResponseEntity<ErrorResponse> handleAppCustomException(AppException e, HttpServletRequest request) {
-		log.error("AppException 발생: {}", e.getErrorCode().getMessage());
-		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
-		ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode(), request);
-		return ResponseEntity
-			.status(e.getErrorCode().getHttpStatus())
-			.body(errorResponse);
-	}
+    @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
+    public ResponseEntity<?> handleValidation(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", "요청이 유효하지 않습니다.", "detail", e.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleOthers(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("message", "서버 오류", "detail", e.getMessage()));
+    }
 }
