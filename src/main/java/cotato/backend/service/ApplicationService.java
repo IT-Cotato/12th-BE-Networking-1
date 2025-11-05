@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -36,21 +37,43 @@ public class ApplicationService {
     // 상세조회
     public ApplicationResponse getApplication(Long id) {
         Application application = applicationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 지원서를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("지원서 없음."));
         return new ApplicationResponse(application);
     }
 
     public ApplicationListResponse getApplications(String filterBy, int page, int pageSize) {
-        Sort sort;
-        switch (filterBy.toLowerCase()) {
-            case "likes" -> sort = Sort.by(Sort.Direction.DESC, "likesNum");
-            case "period" -> sort = Sort.by(Sort.Direction.DESC, "period");
-            case "period+likes" -> sort = Sort.by(Sort.Direction.DESC, "period")
-                    .and(Sort.by(Sort.Direction.DESC, "likesNum"));
-            default -> throw new IllegalArgumentException("filterBy 파라미터가 올바르지 않습니다.");
+        if (page < 1) {
+            throw new IllegalArgumentException("페이지 번호는 1 이상이어야 합니다.");
         }
 
-        Page<Application> result = applicationRepository.findAll(PageRequest.of(page - 1, pageSize, sort));
+        Pageable pageable;
+        Page<Application> result;
+
+        switch (filterBy.toLowerCase()) {
+            // 1. 좋아요 내림차순
+            case "likes" -> {
+                pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "likesNum"));
+                result = applicationRepository.findAll(pageable);
+            }
+            case "periodlikes" -> {
+                // 2. 기수+좋아요 내림차순
+                pageable = PageRequest.of(page - 1, pageSize,
+                        Sort.by(Sort.Direction.DESC, "period")
+                                .and(Sort.by(Sort.Direction.DESC, "likesNum")));
+                result = applicationRepository.findAll(pageable);
+            }
+            case "period" -> {
+                // 3. 디폴트 기수 내림차순
+                pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "period"));
+                result = applicationRepository.findAll(pageable);
+            }
+            default -> throw new IllegalArgumentException("filterBy 파라미터 오류: likes, period, period+likes 중 하나여야 합니다.");
+        }
+
+        if (result.isEmpty()) {
+            throw new IllegalStateException("검색 결과가 없습니다.");
+        }
+
         return new ApplicationListResponse(page, pageSize, filterBy, result);
     }
 

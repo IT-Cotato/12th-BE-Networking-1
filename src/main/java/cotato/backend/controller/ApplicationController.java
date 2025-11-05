@@ -19,8 +19,8 @@ public class ApplicationController {
 
     @PostMapping
     public ResponseEntity<DataResponse<DefaultIdResponse>> createApplication(@RequestBody ApplicationRequest request) {
-        Long id = applicationService.createApplication(request);
-        return ResponseEntity.ok(DataResponse.from(DefaultIdResponse.of(id)));
+        Long applicationId = applicationService.createApplication(request);
+        return ResponseEntity.ok(DataResponse.from(DefaultIdResponse.of(applicationId)));
     }
 
     @GetMapping("/{applicationId}")
@@ -32,7 +32,7 @@ public class ApplicationController {
     @GetMapping("/list")
     public ResponseEntity<DataResponse<ApplicationListResponse>> getApplicationList(
             @RequestParam(defaultValue = "period") String filterBy,
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam int page,
             @RequestParam(defaultValue = "10") int pageSize) {
 
         ApplicationListResponse response = applicationService.getApplications(filterBy, page, pageSize);

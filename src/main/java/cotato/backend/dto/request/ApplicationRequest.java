@@ -20,7 +20,7 @@ public class ApplicationRequest {
     private int passion;
     private String phoneNumber;
 
-    // 지원자 생성용
+    // 지원자 생성 연동
     public Applicant toEntityApplicant() {
         return Applicant.builder()
                 .name(name)
@@ -29,7 +29,7 @@ public class ApplicationRequest {
                 .build();
     }
 
-    // 지원서 생성용
+    // 지원서 생성
     public Application toEntity(Applicant applicant) {
         return Application.builder()
                 .applicant(applicant)
