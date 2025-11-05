@@ -18,8 +18,8 @@ public class AdminController {
 
     @PostMapping
     public ResponseEntity<DataResponse<DefaultIdResponse>> registerAdmin(@RequestBody AdminRequest request) {
-        Long id = adminService.registerAdmin(request);
-        return ResponseEntity.ok(DataResponse.from(DefaultIdResponse.of(id)));
+        Long adminId = adminService.registerAdmin(request);
+        return ResponseEntity.ok(DataResponse.from(DefaultIdResponse.of(adminId)));
     }
 
     @GetMapping("/{adminId}")
@@ -28,7 +28,7 @@ public class AdminController {
         return ResponseEntity.ok(DataResponse.from(response));
     }
 
-    @PostMapping("/{adminId}")
+    @PutMapping("/{adminId}")
     public ResponseEntity<DataResponse<Void>> updateAdmin(@PathVariable Long adminId,
                                                           @RequestBody AdminRequest request) {
         adminService.updateAdmin(adminId, request);
