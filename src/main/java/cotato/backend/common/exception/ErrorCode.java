@@ -15,12 +15,19 @@ public enum ErrorCode {
 	NOT_FOUND(HttpStatus.NOT_FOUND, "찾을 수 없습니다.", "COMMON-003"),
 
 	// Applicant 관련
-	INVALID_NAME_LENGTH(HttpStatus.BAD_REQUEST, "이름은 2~10글자여야 합니다.", "APPLICANT-001"),
-	INVALID_AGE_RANGE(HttpStatus.BAD_REQUEST, "나이는 22~30살이어야 합니다.", "APPLICANT-002"),
-	INVALID_GENERATION(HttpStatus.BAD_REQUEST, "기수는 1기 이상이어야 합니다.", "APPLICANT-003"),
+	APPLICANT_REQUIRED(HttpStatus.BAD_REQUEST, "지원자 정보는 필수입니다.", "APPLICANT-001"),
+	INVALID_NAME_LENGTH(HttpStatus.BAD_REQUEST, "이름은 2~10글자여야 합니다.", "APPLICANT-002"),
+	INVALID_AGE_RANGE(HttpStatus.BAD_REQUEST, "나이는 22~30살이어야 합니다.", "APPLICANT-003"),
 
 	// ApplicationForm 관련
 	APPLICATION_FORM_NOT_FOUND(HttpStatus.NOT_FOUND, "지원서를 찾을 수 없습니다.", "APPLICATIONFORM-001"),
+	APPLICATION_FORM_GENERATION_REQUIRED(HttpStatus.BAD_REQUEST, "기수는 필수입니다.", "APPLICATIONFORM-002"),
+	APPLICATION_FORM_PART_REQUIRED(HttpStatus.BAD_REQUEST, "파트는 필수입니다.", "APPLICATIONFORM-003"),
+	APPLICATION_FORM_SKILL_LEVEL_REQUIRED(HttpStatus.BAD_REQUEST, "스킬 레벨은 필수입니다.", "APPLICATIONFORM-004"),
+	APPLICATION_FORM_PASSION_REQUIRED(HttpStatus.BAD_REQUEST, "열정 레벨은 필수입니다.", "APPLICATIONFORM-005"),
+	APPLICATION_FORM_INVALID_GENERATION(HttpStatus.BAD_REQUEST, "기수는 1기 이상이어야 합니다.", "APPLICATIONFORM-006"),
+	APPLICATION_FORM_INVALID_SKILL_LEVEL(HttpStatus.BAD_REQUEST, "스킬 레벨은 0~10 사이여야 합니다.", "APPLICATIONFORM-007"),
+	APPLICATION_FORM_INVALID_PASSION(HttpStatus.BAD_REQUEST, "열정 레벨은 0~10 사이여야 합니다.", "APPLICATIONFORM-008"),
 
 	// Member 관련
 	MEMBER_NAME_REQUIRED(HttpStatus.BAD_REQUEST, "이름은 필수입니다.", "MEMBER-001"),
@@ -45,7 +52,8 @@ public enum ErrorCode {
 	LIKE_ONLY_FOR_STAFF(HttpStatus.FORBIDDEN, "운영진만 좋아요를 누를 수 있습니다.", "APPLICATIONFORMLIKE-003"),
 
 	//500
-	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에서 에러가 발생하였습니다.", "COMMON-004");
+	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에서 에러가 발생하였습니다.", "COMMON-004"),
+	;
 
 	private final HttpStatus httpStatus;
 	private final String message;

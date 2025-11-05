@@ -19,7 +19,7 @@ public class ApplicationFormController {
     private final ApplicationFormService applicationFormService;
 
     @PostMapping
-    public DataResponse<DefaultIdResponse> submit(@Valid @RequestBody ApplicationFormRequest request) {
+    public DataResponse<DefaultIdResponse> submit(@RequestBody ApplicationFormRequest request) {
         Long id = applicationFormService.submit(request);
         return DataResponse.created(DefaultIdResponse.of(id));
     }

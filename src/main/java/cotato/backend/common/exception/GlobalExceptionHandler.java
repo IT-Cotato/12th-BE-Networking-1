@@ -37,18 +37,4 @@ public class GlobalExceptionHandler {
 				.status(e.getErrorCode().getHttpStatus())
 				.body(errorResponse);
 	}
-
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e, HttpServletRequest request) {
-		log.error("Validation 에러 발생 : {}", e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
-		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
-
-		ErrorResponse errorResponse = ErrorResponse.of(
-				ErrorCode.INVALID_PARAMETER,
-				request
-		);
-		return ResponseEntity
-				.status(HttpStatus.BAD_REQUEST)
-				.body(errorResponse);
-	}
 }

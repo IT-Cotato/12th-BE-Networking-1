@@ -23,6 +23,7 @@ public class ApplicationFormService {
 
     @Transactional
     public Long submit(ApplicationFormRequest request) {
+        validateApplicationForm(request);
 
         Applicant applicant = applicantService.save(request.applicant());
 
@@ -49,5 +50,33 @@ public class ApplicationFormService {
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND));
 
         applicationForm.updateStatus(status);
+    }
+
+    private void validateApplicationForm(ApplicationFormRequest request) {
+        if (request.applicant() == null) {
+            throw new AppException(ErrorCode.APPLICANT_REQUIRED);
+        }
+        if (request.generation() == null) {
+            throw new AppException(ErrorCode.APPLICATION_FORM_GENERATION_REQUIRED);
+        }
+        if (request.part() == null) {
+            throw new AppException(ErrorCode.APPLICATION_FORM_PART_REQUIRED);
+        }
+        if (request.skillLevel() == null) {
+            throw new AppException(ErrorCode.APPLICATION_FORM_SKILL_LEVEL_REQUIRED);
+        }
+        if (request.passion() == null) {
+            throw new AppException(ErrorCode.APPLICATION_FORM_PASSION_REQUIRED);
+        }
+
+        if (request.generation() < 1) {
+            throw new AppException(ErrorCode.APPLICATION_FORM_INVALID_GENERATION);
+        }
+        if (request.skillLevel() < 0 || request.skillLevel() > 10) {
+            throw new AppException(ErrorCode.APPLICATION_FORM_INVALID_SKILL_LEVEL);
+        }
+        if (request.passion() < 0 || request.passion() > 10) {
+            throw new AppException(ErrorCode.APPLICATION_FORM_INVALID_PASSION);
+        }
     }
 }
