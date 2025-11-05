@@ -1,7 +1,6 @@
 package cotato.backend.domain.applicant.dto.response;
 
 import cotato.backend.domain.applicant.entity.ApplicantEntity;
-import cotato.backend.domain.staff.dto.response.StaffResponse;
 
 public record ApplicantResponse(
 	Long id,
