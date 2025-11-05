@@ -21,7 +21,7 @@ public class ApplicantEntity {
 	@Column(name = "applicant_id")
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 10)
 	private String name;
 
     @Column(nullable = false)

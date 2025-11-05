@@ -28,7 +28,7 @@ public class ApplicationEntity {
     private int grade;
 
     @Convert(converter = ApplicationPartConverter.class)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private ApplicationPart part;
 
     @Column(nullable = false)

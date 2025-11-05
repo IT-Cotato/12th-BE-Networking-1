@@ -1,5 +1,6 @@
 package cotato.backend.domain.staff.entity;
 
+import cotato.backend.common.converter.StaffRoleConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,7 @@ public class StaffEntity {
 	@Column(name = "staff_id")
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 10)
 	private String name;
 
     @Column(nullable = false)
@@ -24,8 +25,8 @@ public class StaffEntity {
     @Column(name = "phone_number", nullable = false, length = 11)
     private String phoneNumber;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Convert(converter = StaffRoleConverter.class)
+    @Column(nullable = false, length = 20)
     private StaffRole role;
 
 	@Builder
