@@ -19,8 +19,12 @@ public enum ErrorCode {
     //404
     APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 지원서를 찾을 수 없습니다.", "APP-001"),
     APPLICATION_LIST_EMPTY(HttpStatus.NOT_FOUND, "검색 결과가 없습니다.", "APP-002"),
+    APPLICANT_NOT_FOUND(HttpStatus.NOT_FOUND, "지원자를 찾을 수 없습니다.", "APPLICANT-001"),
 
-	//500
+    //409
+    DUPLICATE_PHONE_NUMBER(HttpStatus.CONFLICT, "이미 등록된 전화번호입니다.", "COMMON-005"),
+
+    //500
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에서 에러가 발생하였습니다.", "COMMON-004"),
 	;
 

@@ -1,5 +1,7 @@
 package cotato.backend.service;
 
+import cotato.backend.common.exception.AppException;
+import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.Applicant;
 import cotato.backend.dto.request.ApplicantRequest;
 import cotato.backend.dto.response.ApplicantResponse;
@@ -14,18 +16,18 @@ public class ApplicantService {
 
     private final ApplicantRepository applicantRepository;
 
-    // 지원자 정보 조회
-    public ApplicantResponse getApplicant(Long id) {
-        Applicant applicant = applicantRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("지원자를 찾을 수 없습니다."));
+    // GET /api/applicant/{applicantId}
+    public ApplicantResponse getApplicant(Long applicnatId) {
+        Applicant applicant = applicantRepository.findById(applicnatId)
+                .orElseThrow(() -> new AppException(ErrorCode.APPLICANT_NOT_FOUND));
         return new ApplicantResponse(applicant);
     }
 
-    // 지원자 정보 수정
+    // PUT /api/applicant/{applicantId}
     @Transactional
     public void updateApplicant(Long id, ApplicantRequest request) {
         Applicant applicant = applicantRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("지원자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new AppException(ErrorCode.APPLICANT_NOT_FOUND));
 
         applicant.update(request.getName(), request.getAge(), request.getPhoneNumber());
     }

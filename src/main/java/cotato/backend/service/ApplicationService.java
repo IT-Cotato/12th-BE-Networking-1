@@ -24,7 +24,7 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final ApplicantRepository applicantRepository;
 
-    // 등록
+    // POST /api/application
     @Transactional
     public Long createApplication(ApplicationRequest request) {
         // 지원자 확인
@@ -36,14 +36,14 @@ public class ApplicationService {
         return saved.getApplicationId();
     }
 
-    // 상세조회
+    // GET /api/application/{applicationId}
     public ApplicationResponse getApplication(Long id) {
         Application application = applicationRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.APPLICATION_NOT_FOUND));
         return new ApplicationResponse(application);
     }
 
-    // 목록 조회
+    // GET /api/application/list?filterBy={filter}}&page={pagenum}
     public ApplicationListResponse getApplications(String filterBy, int page, int pageSize) {
         if (page < 1) {
             throw new AppException(ErrorCode.INVALID_PAGE);
