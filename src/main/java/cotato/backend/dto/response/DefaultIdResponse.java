@@ -1,4 +1,4 @@
-package cotato.backend.api.dto.response;
+package cotato.backend.dto.response;
 
 public record DefaultIdResponse(
 	Long id
