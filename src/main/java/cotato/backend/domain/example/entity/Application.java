@@ -22,17 +22,32 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
-    private int period;
-    private int age;
+
+    @Column(nullable = false)
+    private Integer period;
+
+    @Column(nullable = false)
+    private Integer age;
+
+    @Column(nullable = false)
     private String part;
-    private int ability;
-    private int passion;
+
+    @Column(nullable = false)
+    private Integer ability;
+
+    @Column(nullable = false)
+    private Integer passion;
+
+    @Column(nullable = false)
     private String phoneNumber;
 
     @CreatedDate
+    @Column(nullable = false)
     private LocalDateTime applicationTime;
 
+    @Column(nullable = false)
     private int likeCount;
 
     @ManyToOne
