@@ -22,7 +22,7 @@ public class AdminRequest {
     @Pattern(regexp = "^010\\d{8}$", message = "휴대폰 번호는 010으로 시작하는 11자리 숫자여야 합니다.")
     private String phoneNumber;
 
-    @NotNull(message = "운영진 역활이 입력되지 않았습니다.")
+    @NotNull(message = "운영진 역할이 입력되지 않았습니다.")
     private Admin.Role role;
 
 }
