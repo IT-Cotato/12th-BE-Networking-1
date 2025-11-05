@@ -16,7 +16,16 @@ public enum ErrorCode {
 
 	//500
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에서 에러가 발생하였습니다.", "COMMON-004"),
-	;
+
+    // 지원자 에러코드
+    APPLICANT_NOT_FOUND(HttpStatus.NOT_FOUND, "지원자를 찾을 수 없습니다.", "APP-001"),
+
+    // 지원서 에러코드
+    APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "지원서를 찾을 수 없습니다.", "APL-001"),
+    APPLICATION_ALREADY_EXISTS(HttpStatus.NOT_FOUND, "이미 지원하였습니다.", "APL-002"),
+
+    // 운영진 에러코드
+    MANAGER_NOT_FOUND(HttpStatus.NOT_FOUND, "운영진을 찾을 수 없습니다", "M-001");
 
 	private final HttpStatus httpStatus;
 	private final String message;
