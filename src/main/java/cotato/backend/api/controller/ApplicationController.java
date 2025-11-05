@@ -2,6 +2,7 @@ package cotato.backend.api.controller;
 
 import cotato.backend.domain.example.application.ApplicationService;
 import cotato.backend.domain.example.dto.request.ApplicationRequest;
+import cotato.backend.domain.example.dto.response.ApplicationResponse;
 import cotato.backend.domain.example.entity.Application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +26,13 @@ public class ApplicationController {
 
     // 지원서 단건 조회
     @GetMapping("/{id}")
-    public ResponseEntity<Application> getById(@PathVariable Long id) {
+    public ResponseEntity<ApplicationResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.getById(id));
     }
 
     // 필터/페이지 파라미터로 리스트 조회
     @GetMapping
-    public ResponseEntity<List<Application>> list(
+    public ResponseEntity<List<ApplicationResponse>> list(
             @RequestParam(name = "filterBy", defaultValue = "likes") String filterBy,
             @RequestParam(name = "period", required = false) Integer period,
             @RequestParam(name = "page", defaultValue = "1") int page,

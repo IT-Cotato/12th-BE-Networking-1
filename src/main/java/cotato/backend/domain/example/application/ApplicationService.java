@@ -4,6 +4,7 @@ import cotato.backend.common.exception.EntityNotFoundException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.example.dao.ApplicationRepository;
 import cotato.backend.domain.example.dto.request.ApplicationRequest;
+import cotato.backend.domain.example.dto.response.ApplicationResponse;
 import cotato.backend.domain.example.entity.Applicant;
 import cotato.backend.domain.example.entity.Application;
 import lombok.AccessLevel;
@@ -29,9 +30,6 @@ public class ApplicationService {
     }
 
     @Transactional
-    // 지원서를 생성
-    // ApplicantService.upsert를 호출해 지원자 등록하며 ID를 받은 뒤, 
-    // ApplicantService.getById를 호출해 지원자 정보를 가져옴
     public Long createApplication(ApplicationRequest request) {
         validateRequest(request);
 
@@ -60,23 +58,42 @@ public class ApplicationService {
         return applicationRepository.save(application).getId();
     }
 
-    // 지원서를 ID로 조회, 없으면 NOT_FOUND 예외를 던짐
-    public Application getById(Long id) {
-        return applicationRepository.findById(id)
+    // 지원서 단건 조회: DTO 반환
+    public ApplicationResponse getById(Long id) {
+        Application app = applicationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND));
+
+        return toResponse(app);
     }
 
-    // 지원서 리스트 조회, 필터(좋아요/기수/기수+좋아요)와 페이지 정보를 적용
-    public List<Application> listApplications(FilterBy filterBy, Integer period, int page, int pageSize) {
+    // 지원서 리스트 조회: DTO 리스트 반환
+    public List<ApplicationResponse> listApplications(FilterBy filterBy, Integer period, int page, int pageSize) {
         Pageable pageable = PageRequest.of(Math.max(page - 1, 0), pageSize);
-        return switch (filterBy) {
+        List<Application> apps = switch (filterBy) {
             case likes -> applicationRepository.findTopByLikes(pageable);
             case gisu -> applicationRepository.findByPeriodOrderByApplicationTimeDesc(period, pageable);
             case gisu_likes -> applicationRepository.findByPeriodOrderByLikesDesc(period, pageable);
         };
+
+        return apps.stream().map(this::toResponse).toList();
     }
 
-    // 지원서 입력값 유효성 검사
+//    Entity → DTO 변환 공통 메서드
+    private ApplicationResponse toResponse(Application app) {
+        return ApplicationResponse.builder()
+                .id(app.getId())
+                .name(app.getName())
+                .period(app.getPeriod())
+                .age(app.getAge())
+                .part(app.getPart())
+                .ability(app.getAbility())
+                .passion(app.getPassion())
+                .phoneNumber(app.getPhoneNumber())
+                .applicationTime(app.getApplicationTime())
+                .build();
+    }
+
+    //입력값 유효성 검사
     private void validateRequest(ApplicationRequest request) {
         if (request.getName() == null || request.getName().length() < 2 || request.getName().length() > 10) {
             throw new IllegalArgumentException("이름은 한글 2글자 이상 10글자 이하여야 합니다.");
@@ -101,5 +118,3 @@ public class ApplicationService {
         }
     }
 }
-
-
