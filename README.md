@@ -1,3 +1,1 @@
 <img width="1690" height="812" alt="Image" src="https://github.com/user-attachments/assets/d2fffeb8-0590-45d9-a1b0-1b57bb049be9" />
-
-- 지원서 생성 요청 시에 이름, 지원 기수, 나이, 파트, 실력, 열정, 전화번호, 제출 시간(이건 자동 생성) 필드 중 하나라도 없으면 제출 불가하도록 바꾸고 싶었는데 실패했습니다 ...
