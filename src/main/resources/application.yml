@@ -1,3 +1,20 @@
 spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/cotatoBEnetworking1?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: hj
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
   application:
     name: networking2
+
+server:
+  port: 8080
