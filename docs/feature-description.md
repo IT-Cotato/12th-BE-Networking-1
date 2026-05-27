@@ -34,7 +34,7 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 ```nginx
 server {
     listen 80;
-    server_name EC2_PUBLIC_IP.nip.io;
+    server_name 13.211.153.115.nip.io;
 
     location / {
         proxy_pass http://127.0.0.1:8080;
